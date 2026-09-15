@@ -1,0 +1,38 @@
+{
+  "_": "Скопируй в profile.json и впиши своё.",
+  "me": {
+    "name": "Your Name",
+    "email": "you@example.com",
+    "phone": "+000 000 000 000"
+  },
+  "expected": {
+    "salary_eur": 1500,
+    "salary_text": "1500 € brutto",
+    "hours": "full time",
+    "work_mode": "home office preferred",
+    "start": "immediately"
+  },
+  "cv_file": "CV/your_cv.pdf",
+  "cover_letter": "CL/cover_letter.txt",
+  "keywords": [
+    "python",
+    "junior developer",
+    "backend"
+  ],
+  "home_places": [
+    "your city"
+  ],
+  "avoid_places": [
+    "far city"
+  ],
+  "region_ok": [
+    "europe",
+    "emea",
+    "worldwide",
+    "anywhere"
+  ],
+  "languages": [
+    "en"
+  ],
+  "min_score": 0
+}

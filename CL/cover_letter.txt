@@ -1,0 +1,37 @@
+SUBJECT: Application for {position} - Artem Zadvornyi
+
+Dear Hiring Team,
+
+I'd like to apply for the {position} position at {company}.
+
+I'm a junior Python developer based in Bratislava. I have permanent residency
+here, so there's no work permit or sponsorship to sort out, and I can start
+right away.
+
+Most of what I know I've picked up by building things. My GitHub is
+github.com/artem-zadvornyi. There are a few backend projects on there, all
+written in Python with FastAPI and PostgreSQL. The biggest one is a monorepo
+with a FastAPI API and a Next.js frontend that comes up with a single
+docker compose up, database migrations and all. I've also built a Telegram bot
+that pulls job listings from an API, ranks them and sends alerts, with tests
+running in GitHub Actions.
+
+Before this I studied violin at a conservatory in Bratislava and finished my
+maturita there in 2025. Practising an instrument seriously teaches you to keep
+working at something that sounds wrong for a long time, which turns out to be
+most of programming.
+
+I know I'm at the start of this. That's exactly why I want a team where someone
+more experienced can tell me when I'm doing it wrong. I read the documentation
+before I ask, and a language I haven't used yet doesn't put me off. If you work
+in Java or C#, I'll learn it.
+
+I speak Slovak, English, Ukrainian and Russian. I have a driving licence and a
+car, and I'm happy with an office, hybrid or remote.
+
+I'd be glad to talk. My CV is attached.
+
+Artem Zadvornyi
++421 917 860 112
+zadvornyiartem1@gmail.com
+github.com/artem-zadvornyi

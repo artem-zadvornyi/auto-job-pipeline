@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<title>Auto Job</title>
+<style>
+:root{
+  --lapis:#3B7DC4; --lapis-dim:#2A5A8F;
+  --malachite:#1FA971; --tiger:#C9924A; --amethyst:#A47BD6;
+  --bg:#131519; --panel:#191C22; --panel2:#1F232B;
+  --line:#272C35; --text:#E4E8EF; --muted:#828A98; --muted2:#5C6470;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font:14px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,sans-serif;
+  background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;
+  overflow:hidden;-webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+/* ---------- шапка ---------- */
+header{padding:16px 22px 13px;border-bottom:1px solid var(--line);flex:none}
+.top{display:flex;align-items:baseline;gap:14px;margin-bottom:11px}
+.brand{font-size:15px;font-weight:650;letter-spacing:.2px}
+.brand span{color:var(--lapis)}
+.metrics{margin-left:auto;display:flex;gap:22px;align-items:baseline}
+.m{display:flex;align-items:baseline;gap:6px}
+.m b{font-size:17px;font-weight:640;font-variant-numeric:tabular-nums}
+.m i{font-style:normal;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
+.bar{height:5px;background:var(--panel2);border-radius:3px;overflow:hidden;display:flex}
+.bar div{height:100%;transition:width .35s ease}
+.pace{margin-top:7px;font-size:12px;color:var(--muted)}
+.pace b{color:var(--text);font-variant-numeric:tabular-nums}
+
+/* ---------- панель управления ---------- */
+.controls{padding:12px 22px;display:flex;gap:10px;align-items:center;
+  border-bottom:1px solid var(--line);flex:none}
+#q{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--line);
+  border-radius:7px;padding:8px 12px;color:var(--text);font:inherit;outline:none}
+#q:focus{border-color:var(--lapis-dim)}
+#q::placeholder{color:var(--muted2)}
+.tabs{display:flex;gap:3px;margin-left:4px}
+.tab{padding:7px 13px;border-radius:6px;color:var(--muted);font-size:13px;white-space:nowrap}
+.tab:hover{color:var(--text)}
+.tab.on{background:var(--panel2);color:var(--text)}
+.tab u{text-decoration:none;font-variant-numeric:tabular-nums;color:var(--muted2);margin-left:5px}
+.tab.on u{color:var(--lapis)}
+.src{background:var(--panel);border:1px solid var(--line);border-radius:7px;
+  padding:8px 10px;color:var(--text);font:inherit;font-size:13px;outline:none;cursor:pointer}
+.src:focus{border-color:var(--lapis-dim)}
+.collect{margin-left:auto;padding:8px 15px;border:1px solid var(--line);border-radius:7px;
+  color:var(--muted);font-size:13px;white-space:nowrap}
+.collect:hover{color:var(--text);border-color:var(--lapis-dim)}
+.collect.busy{color:var(--tiger);border-color:var(--tiger)}
+
+/* ---------- рабочая область ---------- */
+main{flex:1;display:grid;grid-template-columns:340px 1fr;min-height:0}
+.list{overflow-y:auto;border-right:1px solid var(--line)}
+.row{padding:11px 18px;border-bottom:1px solid var(--line);cursor:pointer;
+  border-left:2px solid transparent}
+.row:hover{background:var(--panel)}
+.row.on{background:var(--panel2);border-left-color:var(--lapis)}
+.row .t{font-size:13px;font-weight:550;margin-bottom:3px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .c{font-size:12px;color:var(--muted);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.row .meta{margin-top:5px;display:flex;gap:7px;align-items:center;font-size:11px}
+
+.dot{width:6px;height:6px;border-radius:50%;flex:none}
+.s-new{background:var(--lapis)} .s-applied{background:var(--malachite)}
+.s-skipped{background:var(--muted2)} .s-replied{background:var(--amethyst)}
+.s-interview{background:var(--amethyst)} .s-rejected{background:#7A4448}
+.s-offer{background:var(--malachite)}
+.sal{color:var(--malachite)}
+.flag{color:var(--tiger)}
+
+/* ---------- карточка ---------- */
+.card{overflow-y:auto;padding:26px 30px}
+.card h1{font-size:21px;font-weight:640;line-height:1.28;margin-bottom:8px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:3px}
+.sub b{color:var(--text);font-weight:550}
+.money{color:var(--malachite);font-size:15px;font-weight:600;margin:10px 0 2px;
+  font-variant-numeric:tabular-nums}
+.src{font-size:12px;color:var(--muted2);margin-bottom:20px}
+.src a{color:var(--lapis);text-decoration:none}
+.src a:hover{text-decoration:underline}
+
+.go{background:var(--lapis);padding:11px 20px;border-radius:8px;font-weight:600;
+  font-size:14px;margin-bottom:6px}
+.go:hover{background:#4A8AD0}
+.hint{font-size:12px;color:var(--muted2);margin-bottom:22px}
+.hint.ok{color:var(--malachite)}
+
+.lbl{font-size:11px;text-transform:uppercase;letter-spacing:.9px;color:var(--muted2);
+  margin-bottom:9px}
+.states{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px}
+.st{padding:7px 14px;border-radius:7px;border:1px solid var(--line);
+  color:var(--muted);font-size:13px}
+.st:hover{color:var(--text)}
+.st.on{color:#fff;border-color:transparent;font-weight:560}
+.st.on[data-s=applied],.st.on[data-s=offer]{background:var(--malachite)}
+.st.on[data-s=new]{background:var(--lapis)}
+.st.on[data-s=replied],.st.on[data-s=interview]{background:var(--amethyst)}
+.st.on[data-s=rejected]{background:#7A4448}
+.st.on[data-s=skipped]{background:var(--muted2)}
+
+textarea{width:100%;min-height:76px;background:var(--panel);border:1px solid var(--line);
+  border-radius:8px;padding:11px 13px;color:var(--text);font:inherit;resize:vertical;
+  outline:none;margin-bottom:24px}
+textarea:focus{border-color:var(--lapis-dim)}
+.reqs{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;font-size:12.5px;line-height:1.65;color:var(--muted);
+  white-space:pre-wrap;word-break:break-word;max-height:290px;overflow-y:auto}
+.empty{color:var(--muted2);text-align:center;padding:80px 24px;font-size:14px;line-height:1.7}
+.warn{background:rgba(201,146,74,.12);border:1px solid rgba(201,146,74,.35);
+  color:var(--tiger);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:20px}
+.keys{position:fixed;bottom:0;right:0;padding:7px 16px;font-size:11px;color:var(--muted2);
+  background:var(--bg);border-top:1px solid var(--line);border-left:1px solid var(--line);
+  border-top-left-radius:8px}
+.keys b{color:var(--muted);font-weight:600}
+::-webkit-scrollbar{width:9px}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:#333944}
+</style></head><body>
+
+<header>
+  <div class="top">
+    <div class="brand">Auto <span>Job</span></div>
+    <div class="metrics" id="metrics"></div>
+  </div>
+  <div class="bar" id="bar"></div>
+  <div class="pace" id="pace"></div>
+</header>
+
+<div class="controls">
+  <input id="q" placeholder="Поиск: компания, стек, заметка…  напр. «google intern»" autocomplete="off">
+  <div class="tabs" id="tabs"></div>
+  <select class="src" id="src"></select>
+  <button class="collect" id="collect">Собрать свежие</button>
+</div>
+
+<main>
+  <div class="list" id="list"></div>
+  <div class="card" id="card"></div>
+</main>
+
+<div class="keys"><b>J</b>/<b>K</b> — список · <b>Enter</b> — открыть · <b>A</b> — подал · <b>S</b> — пропустить</div>
+
+<script>
+const STATES=[["new","в очереди"],["applied","подал"],["replied","ответили"],
+              ["interview","собес"],["offer","оффер"],["rejected","отказ"],
+              ["skipped","пропустил"]];
+const LABEL=Object.fromEntries(STATES);
+const TABS=[["queue","Очередь"],["applied","Подал"],["wait","Ждут ответа"],
+            ["answered","Ответили"],["all","Все"]];
+const GOAL=500;
+let S={jobs:[],stats:{}}, tab="queue", src="all", sel=null, shown=[];
+
+const plural=(n,a,b,c)=>{const m=n%100,k=n%10;
+  return m>=11&&m<=14?c:k===1?a:k>=2&&k<=4?b:c};
+const esc=s=>(s||"").replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));
+const api=(p,b)=>fetch(p,{method:"POST",body:JSON.stringify(b||{})}).then(r=>r.json());
+
+function match(j){
+  if(src!=="all" && j.source!==src) return false;
+  const q=document.getElementById("q").value.trim().toLowerCase();
+  if(q){
+    const hay=[j.title,j.company,j.location,j.reqs,j.user_note,j.salary]
+      .join(" ").toLowerCase();
+    if(!q.split(/\s+/).every(w=>hay.includes(w))) return false;
+  }
+  if(tab==="queue")    return j.status==="new";
+  if(tab==="applied")  return ["applied","replied","interview","rejected","offer"].includes(j.status);
+  if(tab==="wait")     return j.followup;
+  if(tab==="answered") return ["replied","interview","offer"].includes(j.status);
+  return true;
+}
+
+function render(){
+  const st=S.stats;
+  document.getElementById("metrics").innerHTML=
+    `<div class="m"><b>${st.applied||0}</b><i>подано</i></div>
+     <div class="m"><b style="color:var(--amethyst)">${st.replied||0}</b><i>ответили</i></div>
+     <div class="m"><b style="color:var(--tiger)">${st.followups||0}</b><i>ждут</i></div>
+     <div class="m"><b>${st.days_left||0}</b><i>${plural(st.days_left||0,"день","дня","дней")} до 30.09</i></div>`;
+
+  const pct=x=>Math.min(100,(x/GOAL)*100);
+  document.getElementById("bar").innerHTML=
+    `<div style="width:${pct(st.applied||0)}%;background:var(--malachite)"></div>
+     <div style="width:${pct(st.queue||0)}%;background:var(--lapis-dim);opacity:.5"></div>`;
+
+  const need=st.days_left?Math.ceil(Math.max(GOAL-(st.applied||0),0)/st.days_left):0;
+  const ok=(st.today||0)>=need;
+  document.getElementById("pace").innerHTML=
+    `Сегодня <b style="color:${ok?"var(--malachite)":"var(--tiger)"}">${st.today||0}</b>`+
+    ` из <b>${need}</b> нужных · в очереди <b>${st.queue||0}</b> `+
+    plural(st.queue||0,"вакансия","вакансии","вакансий")+
+    (st.offer?` · <b style="color:var(--malachite)">офферов: ${st.offer}</b>`:"");
+
+  const counts={queue:S.jobs.filter(j=>j.status==="new").length,
+    applied:S.jobs.filter(j=>["applied","replied","interview","rejected","offer"].includes(j.status)).length,
+    wait:S.jobs.filter(j=>j.followup).length,
+    answered:S.jobs.filter(j=>["replied","interview","offer"].includes(j.status)).length,
+    all:S.jobs.length};
+  document.getElementById("tabs").innerHTML=TABS.map(([k,n])=>
+    `<button class="tab ${k===tab?"on":""}" data-t="${k}">${n}<u>${counts[k]}</u></button>`).join("");
+
+  const srcCount={};
+  for(const j of S.jobs){ const k=src; src="all";
+    if(match(j)) srcCount[j.source]=(srcCount[j.source]||0)+1; src=k; }
+  const total=Object.values(srcCount).reduce((a,b)=>a+b,0);
+  document.getElementById("src").innerHTML=
+    `<option value="all">Все сайты (${total})</option>`+
+    Object.keys(srcCount).sort().map(k=>
+      `<option value="${k}"${k===src?" selected":""}>${k} (${srcCount[k]})</option>`).join("");
+
+  shown=S.jobs.filter(match);
+  document.getElementById("list").innerHTML = shown.length ? shown.map(j=>
+    `<div class="row ${j.id===sel?"on":""}" data-id="${j.id}">
+       <div class="t">${esc(j.title)}</div>
+       <div class="c">${esc(j.company)}</div>
+       <div class="meta"><span class="dot s-${j.status}"></span>
+         <span style="color:var(--muted2)">${LABEL[j.status]||j.status}</span>
+         ${j.salary?`<span class="sal">${esc(j.salary)}</span>`:""}
+         ${j.followup?`<span class="flag">● ждёт ответа</span>`:""}
+       </div></div>`).join("")
+    : `<div class="empty">Ничего не найдено</div>`;
+
+  const j=S.jobs.find(x=>x.id===sel);
+  document.getElementById("card").innerHTML = j ? cardHTML(j)
+    : `<div class="empty">Выбери вакансию слева.<br><br>
+        Ищи по компании или стеку — например «google intern»<br>
+        или «fastapi», чтобы вспомнить, куда что подавал.</div>`;
+}
+
+function cardHTML(j){
+  return `<h1>${esc(j.title)}</h1>
+  <div class="sub"><b>${esc(j.company)}</b></div>
+  <div class="sub">${esc(j.location)||"—"}</div>
+  ${j.salary?`<div class="money">${esc(j.salary)}</div>`:""}
+  <div class="src">${esc(j.source)} · <a href="${esc(j.url)}" target="_blank">открыть вакансию ↗</a>
+    ${j.applied?` · подано ${esc(j.applied)}`:""}</div>
+  ${j.followup?`<div class="warn">Молчат больше недели. Напомни о себе — это ровно то,
+     чего не было с Iron Mountain.</div>`:""}
+  <button class="go" id="go">Открыть и скопировать письмо</button>
+  <div class="hint" id="hint">Письмо ляжет в буфер — вставь в форму через Cmd+V</div>
+  <div class="lbl">Статус</div>
+  <div class="states">${STATES.map(([k,n])=>
+    `<button class="st ${j.status===k?"on":""}" data-s="${k}">${n}</button>`).join("")}</div>
+  <div class="lbl">Заметки</div>
+  <textarea id="note" placeholder="С кем говорил, что обещали, когда перезвонят…">${esc(j.user_note)}</textarea>
+  <div class="lbl">Из описания вакансии</div>
+  <div class="reqs">${esc(j.reqs)||"Появится после подачи — сохраняем стек и требования,\nчтобы через месяц вспомнить, кто звонит."}</div>`;
+}
+
+async function load(){ S=await (await fetch("/api/state")).json();
+  if(!sel&&S.jobs.length) sel=S.jobs[0].id; render(); }
+
+async function setStatus(id,s){ await api("/api/update",{id,status:s}); await load(); }
+
+async function openJob(id){
+  const r=await api("/api/open",{id});
+  const h=document.getElementById("hint");
+  if(h){h.textContent="Письмо в буфере. Тема: "+r.subject;h.className="hint ok";}
+}
+
+function move(d){
+  const i=shown.findIndex(j=>j.id===sel);
+  const n=Math.max(0,Math.min(shown.length-1,(i<0?0:i+d)));
+  if(shown[n]){sel=shown[n].id;render();
+    document.querySelector(".row.on")?.scrollIntoView({block:"nearest"});}
+}
+
+document.addEventListener("click",async e=>{
+  const tabEl=e.target.closest(".tab");   if(tabEl){tab=tabEl.dataset.t;render();return;}
+  const row=e.target.closest(".row");     if(row){sel=row.dataset.id;render();return;}
+  const st=e.target.closest(".st");       if(st){await setStatus(sel,st.dataset.s);return;}
+  if(e.target.closest("#go")){await openJob(sel);return;}
+  if(e.target.closest("#collect")){
+    document.getElementById("collect").textContent="Собираю…";
+    await api("/api/collect");
+  }
+});
+document.getElementById("q").addEventListener("input",render);
+document.getElementById("src").addEventListener("change",e=>{src=e.target.value;sel=null;render()});
+document.addEventListener("change",e=>{
+  if(e.target.id==="note") api("/api/update",{id:sel,user_note:e.target.value});
+});
+document.addEventListener("keydown",e=>{
+  if(["INPUT","TEXTAREA"].includes(e.target.tagName)){
+    if(e.key==="Escape")e.target.blur(); return;}
+  if(e.key==="j"||e.key==="ArrowDown"){e.preventDefault();move(1)}
+  if(e.key==="k"||e.key==="ArrowUp"){e.preventDefault();move(-1)}
+  if(e.key==="Enter"&&sel) openJob(sel);
+  if(e.key==="a"&&sel){setStatus(sel,"applied");move(1)}
+  if(e.key==="s"&&sel){setStatus(sel,"skipped");move(1)}
+  if(e.key==="/"){e.preventDefault();document.getElementById("q").focus()}
+});
+
+load();
+setInterval(async()=>{
+  const c=await (await fetch("/api/collect-log")).json();
+  const b=document.getElementById("collect");
+  b.classList.toggle("busy",c.running);
+  if(c.running) b.textContent="Собираю…";
+  else if(b.textContent==="Собираю…"){b.textContent="Собрать свежие";load();}
+},3000);
+</script></body></html>

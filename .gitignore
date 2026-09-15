@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+profile.json
+data/
+CV/
+.appwindow/
+.DS_Store
